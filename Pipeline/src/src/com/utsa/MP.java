@@ -9,36 +9,28 @@ public class MP {
 	ArrayList<String> input2 = new ArrayList<String>();
 	ArrayList<String> input3 = new ArrayList<String>();
 
-	boolean isDecodeInputReady = false;
-	boolean isExInputReady = false;
-	boolean isMemInputReady = false;
-	boolean isWBInputReady = false;
-	boolean ishalt = false;
+	boolean isDecodeInputReady = false, isExInputReady = false, isMemInputReady = false, isWBInputReady = false, ishalt = false;
 	
-	int isRegisterLocked[] = {0,0,0,0,0,0,0,0};
-	int isRegisterNegative[] = {1,1,1,1,1,1,1,1};
+	int isRegisterLocked[] = {0,0,0,0,0,0,0,0}, isRegisterNegative[] = {1,1,1,1,1,1,1,1};
 	
-	int programCounter = 0;
-	int clockCycles =0;
-	int fetchedInsCount = 0;
-	int finishedInsCount = 0;
+	int programCounter = 0,clockCycles =0,fetchedInsCount = 0,finishedInsCount = 0;
 	
 	int[] memory = new int[1024];
-
-	Input inputToDecode = new Input();	
-	Input inputToEx = new Input();
-	Input inputToMem = new Input();
-	Input inputToWr = new Input();
-
 	int registers[] = {0,0,0,0,0,0,0,0};
+
+	Input inputToDecode,inputToEx,inputToMem,inputToWr = new Input();	
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Program Number [1-6]");
 		int progNumber = sc.nextInt();
+		
+		MachineCodes machineCodes = new MachineCodes();
+		machineCodes.createiMemory(progNumber);		
 		MP mp = new MP();
-		mp.createiMemory(progNumber);
+		mp.prepareInputs(machineCodes);
 		mp.mainMethod();
+		sc.close();
 	}
 	
 	public void mainMethod(){
@@ -71,21 +63,15 @@ public class MP {
 		printData(clockCycles,noOfStalls);
 	}
 	
-	private void printData(int i, int noOfStalls) {
+	private void printData(int n, int noOfStalls) {
 		System.out.println("Name: Narender Soorineeda, ID: efq398");
 		System.out.println("Fetched Ins Count:"+fetchedInsCount);
 		System.out.println("Finished Ins Count:"+finishedInsCount);		
-		System.out.println("Number of Clock Cycles = "+i);
+		System.out.println("Number of Clock Cycles = "+n);
 		System.out.println("Number of Stalls  = "+noOfStalls);
 		System.out.println("Registers:");
-		System.out.println("R0:"+registers[0]);
-		System.out.println("R1:"+registers[1]);
-		System.out.println("R2:"+registers[2]);
-		System.out.println("R3:"+registers[3]);
-		System.out.println("R4:"+registers[4]);
-		System.out.println("R5:"+registers[5]);
-		System.out.println("R6:"+registers[6]);
-		System.out.println("R7:"+registers[7]);
+		for(int i=0; i<8; i++)
+			System.out.println("R"+i+":"+registers[i]);
 	}
 
 	//Fetch the instruction
@@ -473,404 +459,6 @@ public class MP {
 		return str;
 	}
 */
-		public void createiMemory(int progNumber){
-			switch(progNumber){
-				case 1:
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADDI");		
-				instruction.add("ST");
-				instruction.add("MUL");
-				instruction.add("ST");
-				instruction.add("SUBI");
-				instruction.add("SUBI");
-				instruction.add("SUBI");
-				instruction.add("BNEQZ");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("LD");
-				instruction.add("LD");
-				instruction.add("ADD");
-				instruction.add("ADDI");
-				instruction.add("DIV");
-				instruction.add("ST");
-				instruction.add("SUBI");
-				instruction.add("SUBI");
-				instruction.add("SUBI");
-				instruction.add("SUBI");
-				instruction.add("BNEQZ");
-				instruction.add("HLT");
-		
-				input1.add("R1");
-				input1.add("R5");
-				input1.add("R2");
-				input1.add("R3");
-				input1.add("R1");
-				input1.add("R4");
-				input1.add("R4");
-				input1.add("R2");
-				input1.add("R3");
-				input1.add("R1");
-				input1.add("R1");
-				input1.add("R1");
-				input1.add("R2");
-				input1.add("R3");
-				input1.add("R4");
-				input1.add("R5");
-				input1.add("R6");		
-				input1.add("R5");
-				input1.add("R7");
-				input1.add("R5");
-				input1.add("R5");
-				input1.add("R2");
-				input1.add("R3");
-				input1.add("R4");
-				input1.add("R1");
-				input1.add("R1");
-				input1.add("RR");
-		
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R2");
-				input2.add("R1");
-				input2.add("R3");
-				input2.add("R2");
-				input2.add("R3");
-				input2.add("R1");
-				input2.add("-7");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R2");
-				input2.add("R3");		
-				input2.add("R5");
-				input2.add("R0");
-				input2.add("R5");
-				input2.add("R4");
-				input2.add("R2");
-				input2.add("R3");
-				input2.add("R4");
-				input2.add("R1");
-				input2.add("-11");
-				input2.add("RR");
-		
-				input3.add("10");
-				input3.add("2");
-				input3.add("196");
-				input3.add("396");
-				input3.add("0");
-				input3.add("R5");
-				input3.add("0");
-				input3.add("4");
-				input3.add("4");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("10");
-				input3.add("196");
-				input3.add("396");
-				input3.add("596");
-				input3.add("0");
-				input3.add("0");		
-				input3.add("R6");
-				input3.add("4");
-				input3.add("R7");
-				input3.add("0");
-				input3.add("4");
-				input3.add("4");
-				input3.add("4");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("RR");
-				break;
-			case 2:
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("SUBI");
-				instruction.add("BEQZ");		
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("SUB");
-				instruction.add("SUBI");
-				instruction.add("BEQZ");
-				instruction.add("MUL");
-				instruction.add("ADDI");
-				instruction.add("BEQZ");
-				instruction.add("ST");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("BEQZ");
-				instruction.add("HLT");
-		
-				input1.add("R7");
-				input1.add("R1");
-				input1.add("R2");
-				input1.add("R2");
-				input1.add("R3");
-				input1.add("R4");
-				input1.add("R2");
-				input1.add("R2");
-				input1.add("R2");
-				input1.add("R3");
-				input1.add("R4");
-				input1.add("R0");
-				input1.add("R3");
-				input1.add("R7");
-				input1.add("R1");
-				input1.add("R0");
-				input1.add("RR");
-		
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R1");
-				input2.add("12");
-				input2.add("R0");
-				input2.add("R4");
-				input2.add("R4");
-				input2.add("R2");
-				input2.add("3");
-				input2.add("R3");
-				input2.add("R4");
-				input2.add("-6");
-				input2.add("R7");
-				input2.add("R7");
-				input2.add("R1");
-				input2.add("-14");
-				input2.add("RR");		
-		
-				input3.add("0");
-				input3.add("1");
-				input3.add("10");
-				input3.add("RR");
-				input3.add("1");
-				input3.add("1");
-				input3.add("R1");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("R4");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("0");
-				input3.add("4");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("RR");
-				break;
-			case 3:
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ST");
-				instruction.add("HLT");		
-		
-				input1.add("R1");
-				input1.add("R1");
-				input1.add("R1");
-				input1.add("R1");
-				input1.add("RR");
-				
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R1");
-				input2.add("RR");
-		
-				input3.add("10");
-				input3.add("8");
-				input3.add("16");
-				input3.add("4");
-				input3.add("RR");
-				break;
-			case 4:
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("SUBI");
-				instruction.add("BEQZ");		
-				instruction.add("ADDI");
-				instruction.add("SUBI");
-				instruction.add("BEQZ");
-				instruction.add("ADDI");
-				instruction.add("SUBI");
-				instruction.add("BEQZ");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("BEQZ");
-				instruction.add("ADDI");
-				instruction.add("BEQZ");
-				instruction.add("ADDI");
-				instruction.add("BEQZ");
-				instruction.add("HLT");
-		
-				input1.add("R4");
-				input1.add("R1");
-				input1.add("R5");
-				input1.add("R5");
-				input1.add("R2");
-				input1.add("R5");
-				input1.add("R5");
-				input1.add("R3");
-				input1.add("R5");
-				input1.add("R5");
-				input1.add("R4");
-				input1.add("R3");
-				input1.add("R0");
-				input1.add("R2");
-				input1.add("R0");
-				input1.add("R1");
-				input1.add("R0");
-				input1.add("RR");
-		
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R1");
-				input2.add("13");
-				input2.add("R0");
-				input2.add("R2");
-				input2.add("8");
-				input2.add("R0");
-				input2.add("R3");
-				input2.add("3");
-				input2.add("R4");
-				input2.add("R3");
-				input2.add("-5");
-				input2.add("R2");
-				input2.add("-10");
-				input2.add("R1");
-				input2.add("-15");		
-				input2.add("RR");		
-		
-				input3.add("0");
-				input3.add("0");
-				input3.add("10");
-				input3.add("RR");
-				input3.add("0");
-				input3.add("10");
-				input3.add("RR");
-				input3.add("0");
-				input3.add("5");
-				input3.add("RR");
-				input3.add("1");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("RR");		
-				break;
-			case 5:
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADDI");		
-				instruction.add("ADDI");
-				instruction.add("SUBI");
-				instruction.add("BEQZ");
-				instruction.add("AND");
-				instruction.add("BEQZ");
-				instruction.add("ADDI");
-				instruction.add("MUL");
-				instruction.add("ADDI");
-				instruction.add("BEQZ");
-				instruction.add("HLT");
-		
-				input1.add("R1");
-				input1.add("R2");
-				input1.add("R3");
-				input1.add("R7");
-				input1.add("R4");
-				input1.add("R5");
-				input1.add("R5");
-				input1.add("R6");
-				input1.add("R6");
-				input1.add("R1");
-				input1.add("R3");
-				input1.add("R4");
-				input1.add("R0");
-				input1.add("RR");
-		
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R4");
-				input2.add("6");
-				input2.add("R2");
-				input2.add("1");
-				input2.add("R1");
-				input2.add("R3");
-				input2.add("R4");
-				input2.add("-8");
-				input2.add("RR");
-		
-				input3.add("0");
-				input3.add("1023");
-				input3.add("1");
-				input3.add("2");
-				input3.add("0");
-				input3.add("32");
-				input3.add("RR");
-				input3.add("R3");
-				input3.add("RR");
-				input3.add("1");
-				input3.add("R7");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("RR");
-				break;
-			case 6:
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADDI");
-				instruction.add("ADD");
-				instruction.add("ADD");
-				instruction.add("ADD");
-				instruction.add("SUBI");
-				instruction.add("BNEQZ");
-				instruction.add("ST");
-				instruction.add("HLT");
-		
-				input1.add("R1");
-				input1.add("R2");
-				input1.add("R5");
-				input1.add("R3");
-				input1.add("R1");
-				input1.add("R2");
-				input1.add("R5");
-				input1.add("R5");
-				input1.add("R3");
-				input1.add("RR");
-				
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R0");
-				input2.add("R1");
-				input2.add("R2");
-				input2.add("R3");
-				input2.add("R5");
-				input2.add("-5");
-				input2.add("R3");
-				input2.add("RR");
-		
-				input3.add("0");
-				input3.add("1");
-				input3.add("10");
-				input3.add("R2");
-				input3.add("R0");
-				input3.add("R0");
-				input3.add("1");
-				input3.add("RR");
-				input3.add("0");
-				input3.add("RR");
-					break;
-			}
-		}
 		private int[] getRegisterNumber(String registerName) {
 			int[] registerStatus = {-1,-1};
 			
@@ -940,6 +528,12 @@ public class MP {
 					registerStatus[0] = 0; 
 					return registerStatus;
 			}
+		}
+		private void prepareInputs(MachineCodes machineCodes) {
+			this.instruction = machineCodes.getInstruction();
+			this.input1 = machineCodes.getInput1();
+			this.input2 = machineCodes.getInput2();
+			this.input3 = machineCodes.getInput3();
 		}
 	
 }
